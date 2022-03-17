@@ -6,7 +6,7 @@ public class Chaser : MonoBehaviour
 {
     private Rigidbody rb;
     public Transform TargetPosition;
-    public float EnemySpeed = 1f;
+    public float EnemySpeed;
 
     void Update()
     {
