@@ -11,12 +11,7 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Game");
     }
 
-    public void OpenOptions()
-    {
-        //needs option stuff
-    }
-
-    public void Quit()
+        public void Quit()
     {
         //doesn't work in Unity, but there for post-release
         Application.Quit();

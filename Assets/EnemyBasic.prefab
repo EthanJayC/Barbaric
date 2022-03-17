@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4730370114383045844}
   - component: {fileID: 1581041361815694135}
   - component: {fileID: 9183392843066224767}
+  - component: {fileID: 3471444454687977622}
   m_Layer: 0
   m_Name: EnemyBasic
   m_TagString: ChasingPlayer
@@ -96,7 +97,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 7
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 4
@@ -128,4 +129,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetPosition: {fileID: 0}
-  EnemySpeed: 10
+  EnemySpeed: 30
+--- !u!95 &3471444454687977622
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6046218251148992978}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d58666115a517bf469002159738d9502, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

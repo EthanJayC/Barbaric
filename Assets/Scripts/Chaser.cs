@@ -18,11 +18,12 @@ public class Chaser : MonoBehaviour
             rb.velocity += TargetDirection * EnemySpeed * Time.deltaTime; //moves towards target
             Debug.Log(TargetDirection);
 
+            //TODO fix the slow Z axis movement as a result of this []
             //rotates mob on 2-axis
             //left
-            if (TargetDirection.x > 0) transform.rotation = Quaternion.Euler(245, 0, 180);
+            if (TargetDirection.x < 0) transform.rotation = Quaternion.Euler(245, 0, 180);
             //right
-            if (TargetDirection.x < 0) transform.rotation = Quaternion.Euler(65, 0, 0);
+            if (TargetDirection.x > 0) transform.rotation = Quaternion.Euler(65, 0, 0);
         }
 
 

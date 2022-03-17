@@ -29,26 +29,26 @@ public class Game : MonoBehaviour
     public float SkullCooldownPickup;
     public Transform SpawnLocationOne;
 
-    //UI stuff
+    //generic UI stuff
     int KillCount;
     private float DamageCooldownTimer;
     public float DamageCooldownReset;
     public int HitPoints;
     public int SkullCount;
-    public GameObject PauseUI;
     public GameObject MusicUI;
     public Transform HP;
     public Transform SkullText;
     public Transform DashText;
     public Transform KillText;
 
-    //Misc
+    //in-game menu UI stuff
     public bool Paused;
+    public bool InShop;
+    public GameObject PauseUI;
+    public GameObject ShopUI;
 
-    ////Attacking
-    //public List<Transform> EnemiesInRange = new List<Transform>();
-    //private float AttackZoneDecay = 0.1f;
-    //public float AttackZoneDecayReset;
+    //Misc
+    private GameObject Music;
 
     //Movement
     private Rigidbody rb;
@@ -62,14 +62,11 @@ public class Game : MonoBehaviour
     public float SmoothingSpeed;
     public bool IsDashing;
 
-    //TO FIX: Review these once core gameplay and basic gfx/audio is in place
-    //public Transform DashCam;
-    //public Transform Shaker;
-
     private void Start()
     {
         DamageCooldownTimer = 0;
         Time.timeScale = 1f;
+        Music = GameObject.Find("Music");
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -78,12 +75,12 @@ public class Game : MonoBehaviour
         {
             DamageCooldownTimer += DamageCooldownReset;
             Debug.Log("Player hit!");
-            HP.GetComponent<Text>().text = ("Health left: " + HitPoints.ToString());
+            HP.GetComponent<Text>().text = ("HP: " + HitPoints.ToString());
             HitPoints--;
             if (HitPoints <= 0)
             {
                 HitPoints = 0;
-                HP.GetComponent<Text>().text = ("Look how they massarcred ma boi");
+                HP.GetComponent<Text>().text = ("You died.");
             }
         }
 
@@ -100,7 +97,12 @@ public class Game : MonoBehaviour
     }
 
 
-
+    //quit game ingame option
+    public void QuitGame()
+    {
+        //TODO: SINGLETON STUFF TO KILL MUSIC ON QUITTING BACK TO MENU
+        SceneManager.LoadScene("Main menu");
+    }
 
 
     public void DoAttack(List<Transform> ER)
@@ -125,19 +127,16 @@ public class Game : MonoBehaviour
         }
     }
 
-    //quit game in game options
-    void QuitGame()
-    {
-        Debug.Log("GAME DIED");
-        SceneManager.LoadScene("Main menu");
-    }
-
     void Update()
     {
+
+        //changing music on music slider
+        Music.GetComponent<AudioSource>().volume = MusicUI.GetComponent<Slider>().value;
+
+        //cooldown between taking dmg
         DamageCooldownTimer -= Time.deltaTime;
         if (DamageCooldownTimer <= 0)
         {
-            //Debug.Log("Ready to get hurt again");
             DamageCooldownTimer = 0;
         }
 
@@ -147,22 +146,24 @@ public class Game : MonoBehaviour
         //Disables player collider whilst dashing
         GetComponent<CapsuleCollider>().enabled = !IsDashing;
 
+        //tallies the kills made/skulls collected
         KillText.GetComponent<Text>().text = ("Kill Count: " + KillCount.ToString());
         SkullText.GetComponent<Text>().text = ("Skulls Collected: " + SkullCount.ToString());
+
+        //function calls for generic game mechanics
         DashCooldown();
         Moving();
         MainAttack();
         EnemySpawn();
 
-        //Generic actions like pausing, opening menu in-game etc.
-        if (Input.GetKeyDown(KeyCode.Escape))
+        //Opening ingame shop
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            //PAUSES GAME, OPENS IN GAME MENU WITH OPTION TO QUIT (Using LoadScene below) []
-            Paused = !Paused;
-            PauseUI.SetActive(Paused);
-            if (Paused == true)
+            InShop = !InShop;
+            ShopUI.SetActive(InShop);
+            if (InShop == true)
             {
-                Time.timeScale = 0;
+                Time.timeScale = 0; //< SET TO SUPER SLOWMO FOR ACTUAL GAME RELEASE []
                 PauseMusic.TransitionTo(0);
             }
             else
@@ -170,13 +171,25 @@ public class Game : MonoBehaviour
                 Time.timeScale = 1f;
                 IngameMusic.TransitionTo(0);
             }
-
         }
 
-        //changing music on music slider
-
-
-       
+        //Pausing the game
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Paused = !Paused;
+            PauseUI.SetActive(Paused);
+            if (Paused == true)
+            {
+                Time.timeScale = 0;
+                //no slow transition as it isn't allowed when timescale freezes
+                PauseMusic.TransitionTo(0);
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                IngameMusic.TransitionTo(0);
+            }
+        }
         //stops keys being registered whilst paused
         if (Paused) return;
 
@@ -208,6 +221,7 @@ public class Game : MonoBehaviour
 
                 //creates Attack collider prefab
                 GameObject AttackZone = Instantiate(AttackPrefab, transform.position, Quaternion.identity);
+                //Attack collider prefab grabs the 'Attacking' script and sets the game part of the script to refer to THIS script
                 AttackZone.GetComponent<Attacking>().game = this;
 
             }
@@ -252,11 +266,13 @@ public class Game : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && Cooldown <= 0f)
             {
                 Cooldown += DashReset;
-                TargetPosition = transform.position + rb.velocity.normalized * DashDistance; //direction * distance dashed, ready to be smoothed
+                TargetPosition = transform.position + rb.velocity.normalized * DashDistance;
                 AudioSource.PlayClipAtPoint(DashNoise, transform.position);
                 IsDashing = true;
             }
-            //TODO:**** Ensuring SmoothingSpeed stops messing with player movement
+            //Leaving the below comments in to highlight that LERP and smoothing isn't necessary for physics based dash move
+            //...
+            //Ensuring SmoothingSpeed stops messing with player movement
             //Smoothing the dash visual  ... SmoothingSpeed affects normal movement also..
 
             if (IsDashing)
@@ -266,13 +282,6 @@ public class Game : MonoBehaviour
             }
         }
 
-        //TO FIX:
-        //Shake effect that links to the camera object NOTE: currently resets camera position to Players starting position
-
-        //if (Cooldown > 0)
-        //{
-        //    Shaker.position = Random.insideUnitSphere * (Cooldown / 2);
-        //}
 
     }
 }
