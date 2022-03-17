@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ChasingPlayer
   - SkullPickup
+  - wall
   layers:
   - Default
   - TransparentFX

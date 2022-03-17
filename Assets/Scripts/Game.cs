@@ -27,7 +27,7 @@ public class Game : MonoBehaviour
     public float EnemySpeed;
     public float SpawnReset;
     public float SkullCooldownPickup;
-    public Transform SpawnLocationOne;
+    public List<GameObject> SpawnLocations;
 
     //generic UI stuff
     int KillCount;
@@ -81,6 +81,7 @@ public class Game : MonoBehaviour
             {
                 HitPoints = 0;
                 HP.GetComponent<Text>().text = ("You died.");
+                Time.timeScale = 0;
             }
         }
 
@@ -95,6 +96,7 @@ public class Game : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+
 
 
     //quit game ingame option
@@ -200,8 +202,11 @@ public class Game : MonoBehaviour
             Spawn -= Time.deltaTime;
             if (Spawn <= 0)
             {
-                Spawn = SpawnReset;
-                GameObject EnemyBasic = Instantiate(EnemyPrefab, SpawnLocationOne.position, Quaternion.Euler(65, 0, 0));
+                //picks one of the spawn point gameobjects and pulls its transform info
+                Transform RandomSpawnpoint = SpawnLocations[Random.Range(0, SpawnLocations.Count)].transform;
+
+                Spawn = SpawnReset;                              //grabs random transform.position info to spawn from
+                GameObject EnemyBasic = Instantiate(EnemyPrefab, RandomSpawnpoint.position, Quaternion.Euler(65, 0, 0));
 
                 //this code allows prefabs to use a script and follow an object
                 EnemyBasic.GetComponent<Chaser>().TargetPosition = Player.transform;
