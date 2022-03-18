@@ -14,3 +14,5 @@ In-game shop currently has keybindings due to the button functions not currently
 1 - buy helf
 2 - buy attack buff (only purchasable once atm, although plan to scale it in future)
 3 - buy dash cooldown
+
+that's all, have fun, it's a little janky atm though!
