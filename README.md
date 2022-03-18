@@ -8,6 +8,7 @@ A quick tutorial:
 - Spacebar - Dash
 - Left mousebutton - Spam to kill
 - Tab - Brings up in-game shop to spend skulls on some cool abilities (WIP)
+- NOTE: The attack upgrade costs only 5 skulls so you can test it out, after that you'll rack up the skulls quick
 - Esc - Pause menu with music slider and quit
 
 In-game shop currently has keybindings due to the button functions not currently working
