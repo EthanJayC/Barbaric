@@ -49,6 +49,10 @@ public class Game : MonoBehaviour
 
     //Misc
     private GameObject Music;
+    public GameObject HealButton;
+    public GameObject AttackBuffButton;
+    public GameObject DashBuffButton;
+    public bool DmgBuff;
 
     //Movement
     private Rigidbody rb;
@@ -67,6 +71,7 @@ public class Game : MonoBehaviour
         DamageCooldownTimer = 0;
         Time.timeScale = 1f;
         Music = GameObject.Find("Music");
+        HP.GetComponent<Text>().text = ("HP: " + HitPoints.ToString());
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -74,7 +79,6 @@ public class Game : MonoBehaviour
         if ((collision.collider.tag == "ChasingPlayer") && DamageCooldownTimer == 0)
         {
             DamageCooldownTimer += DamageCooldownReset;
-            Debug.Log("Player hit!");
             HP.GetComponent<Text>().text = ("HP: " + HitPoints.ToString());
             HitPoints--;
             if (HitPoints <= 0)
@@ -97,6 +101,19 @@ public class Game : MonoBehaviour
         }
     }
 
+    //TODO; SHOP BUTTONS
+    // [X] Health upgrade
+    // [] Attack buff
+    // [] Dash buff
+
+    //buying health at ingame shop
+    public void HealthUpgrade()
+    {
+        HitPoints += 3;
+        HP.GetComponent<Text>().text = ("HP: " + HitPoints.ToString());
+        SkullCount -= 20;
+        SkullText.GetComponent<Text>().text = ("Skulls Collected: " + SkullCount.ToString());
+    }
 
 
     //quit game ingame option
@@ -110,10 +127,9 @@ public class Game : MonoBehaviour
     public void DoAttack(List<Transform> ER)
     {
         //Enemies in Range list placed here so AttackPrefab spawns regardless if enemies in range or not
-        if (ER.Count > 0)
+        if (ER.Count > 0 && DmgBuff == false)
         {
             int index = Random.Range(0, ER.Count);
-
             //Sets enemy's death location to instantiate skull prefab
             Vector3 enemyLocationDeath = ER[index].transform.position;
             //index is a random number of how many targets are within Weapon Reach
@@ -121,19 +137,140 @@ public class Game : MonoBehaviour
 
             AudioSource.PlayClipAtPoint(DeathRattle[Random.Range(0, DeathRattle.Count)], transform.position);
 
-
             //spawn skull on enemy death location                            //drops variance
             GameObject Skull = Instantiate(SkullPrefab, enemyLocationDeath + Random.insideUnitSphere * 0.3f, Quaternion.Euler(0, 180, 0));
-            //TODO: Add skull flying animation
+            KillCount++;
+
+        }
+        //This is the attack once damage buff has been bought NOTE: Want this to scale so player can keep increasing it
+        else if (ER.Count > 1 && DmgBuff != false)
+        {
+            //should loop twice
+            for (int i = 0; i < 2; i++)
+            {
+                int index = Random.Range(0, ER.Count);
+                Vector3 enemyLocationDeath = ER[index].transform.position;
+                Destroy(ER[index].gameObject);
+                AudioSource.PlayClipAtPoint(DeathRattle[Random.Range(0, DeathRattle.Count)], transform.position);
+
+                //spawn skull on enemy death location                            //drops variance
+                GameObject Skull = Instantiate(SkullPrefab, enemyLocationDeath + Random.insideUnitSphere * 0.3f, Quaternion.Euler(0, 180, 0));
+
+                KillCount ++;
+            }
+        } 
+        else if (ER.Count > 0 && DmgBuff != false)
+        //should take into account killing only 1 enemy, and drop 1 skull rather than 2
+        {
+            int index = Random.Range(0, ER.Count);
+            //Sets enemy's death location to instantiate skull prefab
+            Vector3 enemyLocationDeath = ER[index].transform.position;
+            //index is a random number of how many targets are within Weapon Reach
+            Destroy(ER[index].gameObject);
+            AudioSource.PlayClipAtPoint(DeathRattle[Random.Range(0, DeathRattle.Count)], transform.position);
+            //spawn skull on enemy death location                            //drops variance
+            GameObject Skull = Instantiate(SkullPrefab, enemyLocationDeath + Random.insideUnitSphere * 0.3f, Quaternion.Euler(0, 180, 0));
             KillCount++;
         }
+    }
+    public void AttackUpgrade()
+    {
+        Debug.Log("ATTTTAAACK BUUUUFF!");
+        //Boolean that enables, MainAttack checks for enabled and doubles dmg
+        DmgBuff = true;
     }
 
     void Update()
     {
+        //Pausing the game
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Paused = !Paused;
+            PauseUI.SetActive(Paused);
+            if (Paused == true)
+            {
+                Time.timeScale = 0;
+                //no slow transition as it isn't allowed when timescale freezes
+                PauseMusic.TransitionTo(0);
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                IngameMusic.TransitionTo(0);
+            }
+        }
+        //Opening ingame shop
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            InShop = !InShop;
+            ShopUI.SetActive(InShop);
+            if (InShop == true)
+            {
+                Time.timeScale = 0; //< SET TO SUPER SLOWMO FOR ACTUAL GAME RELEASE []
+                PauseMusic.TransitionTo(0);
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                IngameMusic.TransitionTo(0);
+                //Resets texts and font sizes if player had insufficient skulls for purchase
+                HealButton.GetComponentInChildren<Text>().fontSize = 18;
+                HealButton.GetComponentInChildren<Text>().text = ("Heal");
+                AttackBuffButton.GetComponentInChildren<Text>().fontSize = 18;
+                AttackBuffButton.GetComponentInChildren<Text>().text = ("Smite your foes");
+                DashBuffButton.GetComponentInChildren<Text>().fontSize = 18;
+                DashBuffButton.GetComponentInChildren<Text>().text = ("Dash faster");
+            }
+        }
+
+        //Healing function (Keybinds used until buttons are fixed)
+        //TODO [] Add sounds on purchase!
+        //TODO [] Add sound for insufficient skulls!
+
+        //Health purchase
+        if (InShop == true && Input.GetKeyDown(KeyCode.Alpha1) && SkullCount >= 20)
+        {
+            HealthUpgrade();
+        }
+        else if (InShop == true && Input.GetKeyDown(KeyCode.Alpha1) && SkullCount < 20)
+        {
+            HealButton.GetComponentInChildren<Text>().fontSize = 12;
+            HealButton.GetComponentInChildren<Text>().text = ("Need more skulls!");
+        }
+
+        //Attack buff purchase
+        //NOTE: CHANGE TO HIGHER AFTER TESTING
+        if (InShop == true && Input.GetKeyDown(KeyCode.Alpha2) && SkullCount >= 5)
+        {
+            AttackUpgrade();
+        }
+        else if (InShop == true && Input.GetKeyDown(KeyCode.Alpha2) && SkullCount < 5)
+        {
+
+            AttackBuffButton.GetComponentInChildren<Text>().fontSize = 12;
+            AttackBuffButton.GetComponentInChildren<Text>().text = ("need more skulls!");
+        }
+
+        //Dash buff purchase
+        if (InShop == true && Input.GetKeyDown(KeyCode.Alpha3) && SkullCount >= 40)
+        {
+            //DashUpgrade();
+            Debug.Log("dash upgrade purchased");
+        }
+        else if (InShop == true && Input.GetKeyDown(KeyCode.Alpha3) && SkullCount < 40)
+        {
+            DashBuffButton.GetComponentInChildren<Text>().fontSize = 12;
+            DashBuffButton.GetComponentInChildren<Text>().text = ("Need more skulls!");
+        }
+
+
 
         //changing music on music slider
         Music.GetComponent<AudioSource>().volume = MusicUI.GetComponent<Slider>().value;
+
+        //stops keys being registered whilst paused
+        if (Paused || InShop) return;
+
 
         //cooldown between taking dmg
         DamageCooldownTimer -= Time.deltaTime;
@@ -158,42 +295,7 @@ public class Game : MonoBehaviour
         MainAttack();
         EnemySpawn();
 
-        //Opening ingame shop
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            InShop = !InShop;
-            ShopUI.SetActive(InShop);
-            if (InShop == true)
-            {
-                Time.timeScale = 0; //< SET TO SUPER SLOWMO FOR ACTUAL GAME RELEASE []
-                PauseMusic.TransitionTo(0);
-            }
-            else
-            {
-                Time.timeScale = 1f;
-                IngameMusic.TransitionTo(0);
-            }
-        }
 
-        //Pausing the game
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Paused = !Paused;
-            PauseUI.SetActive(Paused);
-            if (Paused == true)
-            {
-                Time.timeScale = 0;
-                //no slow transition as it isn't allowed when timescale freezes
-                PauseMusic.TransitionTo(0);
-            }
-            else
-            {
-                Time.timeScale = 1f;
-                IngameMusic.TransitionTo(0);
-            }
-        }
-        //stops keys being registered whilst paused
-        if (Paused) return;
 
 
         //Enemy Spawns
@@ -216,20 +318,19 @@ public class Game : MonoBehaviour
         //Attacking, random kill code
         void MainAttack()
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0)/* && EnemiesInRange.Count > 0*/)
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 //TODO: ADD SOUND [X]
                 //      ADD ANIMATION []
 
                 //Weapon sound triggers
                 AudioSource.PlayClipAtPoint(WeaponSwings[Random.Range(0, WeaponSwings.Count)], transform.position);
-
                 //creates Attack collider prefab
                 GameObject AttackZone = Instantiate(AttackPrefab, transform.position, Quaternion.identity);
                 //Attack collider prefab grabs the 'Attacking' script and sets the game part of the script to refer to THIS script
                 AttackZone.GetComponent<Attacking>().game = this;
-
             }
+
 
         }
 

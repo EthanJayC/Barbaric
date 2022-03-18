@@ -8,15 +8,14 @@ public class Attacking : MonoBehaviour
     public List<Transform> EnemiesInRange = new List<Transform>();
     private float AttackZoneDecay = 0.01f;
     public Game game;
+    
 
     //Collision to get within Weapon range of player
     private void OnTriggerEnter(Collider other)
     {
-        //TODO: Change this so it's assigned to AttackPrefab that spawns on click
         if (other.tag == "ChasingPlayer")
         {
             EnemiesInRange.Add(other.transform);
-            Debug.Log(EnemiesInRange.Count);
         }
     }
 
