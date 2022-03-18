@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetPosition: {fileID: 0}
-  EnemySpeed: 25
+  EnemySpeed: 35
 --- !u!95 &3471444454687977622
 Animator:
   serializedVersion: 3

@@ -5915,8 +5915,9 @@ MonoBehaviour:
   HealButton: {fileID: 1873800707}
   AttackBuffButton: {fileID: 1430845752}
   DashBuffButton: {fileID: 24228110}
+  DmgBuff: 0
   VelocitySpeed: 140
-  DashReset: 2
+  DashReset: 4
   DashDistance: 10
   SmoothingSpeed: 50
   IsDashing: 0
