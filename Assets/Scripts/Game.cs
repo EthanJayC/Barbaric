@@ -115,6 +115,22 @@ public class Game : MonoBehaviour
         SkullText.GetComponent<Text>().text = ("Skulls Collected: " + SkullCount.ToString());
     }
 
+    public void AttackUpgrade()
+    {
+        Debug.Log("ATTTTAAACK BUUUUFF!");
+        //Boolean that enables, MainAttack checks for enabled and doubles dmg
+        DmgBuff = true;
+        SkullCount -= 5;
+        SkullText.GetComponent<Text>().text = ("Skulls Collected: " + SkullCount.ToString());
+    }
+
+    public void DashUpgrade()
+    {
+        Debug.Log("Time to dash like a madman");
+        DashReset -= 1;
+        SkullCount -= 40;
+        SkullText.GetComponent<Text>().text = ("Skulls Collected: " + SkullCount.ToString());
+    }
 
     //quit game ingame option
     public void QuitGame()
@@ -173,12 +189,6 @@ public class Game : MonoBehaviour
             KillCount++;
         }
     }
-    public void AttackUpgrade()
-    {
-        Debug.Log("ATTTTAAACK BUUUUFF!");
-        //Boolean that enables, MainAttack checks for enabled and doubles dmg
-        DmgBuff = true;
-    }
 
     void Update()
     {
@@ -231,6 +241,7 @@ public class Game : MonoBehaviour
         if (InShop == true && Input.GetKeyDown(KeyCode.Alpha1) && SkullCount >= 20)
         {
             HealthUpgrade();
+            HealButton.GetComponentInChildren<Text>().text = ("Claimed!");
         }
         else if (InShop == true && Input.GetKeyDown(KeyCode.Alpha1) && SkullCount < 20)
         {
@@ -243,6 +254,7 @@ public class Game : MonoBehaviour
         if (InShop == true && Input.GetKeyDown(KeyCode.Alpha2) && SkullCount >= 5)
         {
             AttackUpgrade();
+            AttackBuffButton.GetComponentInChildren<Text>().text = ("CLAIMED!");
         }
         else if (InShop == true && Input.GetKeyDown(KeyCode.Alpha2) && SkullCount < 5)
         {
@@ -254,8 +266,8 @@ public class Game : MonoBehaviour
         //Dash buff purchase
         if (InShop == true && Input.GetKeyDown(KeyCode.Alpha3) && SkullCount >= 40)
         {
-            //DashUpgrade();
-            Debug.Log("dash upgrade purchased");
+            DashUpgrade();
+            DashBuffButton.GetComponentInChildren<Text>().text = ("CLAIMED!");
         }
         else if (InShop == true && Input.GetKeyDown(KeyCode.Alpha3) && SkullCount < 40)
         {
