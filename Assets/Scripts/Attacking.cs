@@ -17,6 +17,11 @@ public class Attacking : MonoBehaviour
         {
             EnemiesInRange.Add(other.transform);
         }
+
+        if (other.tag == "Gor")
+        {
+            EnemiesInRange.Add(other.transform);
+        }
     }
 
     // Update is called once per frame

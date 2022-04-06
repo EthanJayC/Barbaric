@@ -7,6 +7,8 @@ TagManager:
   - ChasingPlayer
   - SkullPickup
   - wall
+  - PlayerAttack
+  - Gor
   layers:
   - Default
   - TransparentFX

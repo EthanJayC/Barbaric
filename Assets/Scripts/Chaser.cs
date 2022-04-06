@@ -7,6 +7,7 @@ public class Chaser : MonoBehaviour
     private Rigidbody rb;
     public Transform TargetPosition;
     public float EnemySpeed;
+    public Animator animator;
 
     void Update()
     {
@@ -23,6 +24,8 @@ public class Chaser : MonoBehaviour
             //right
             if (TargetDirection.x > 0) transform.rotation = Quaternion.Euler(65, 0, 0);
         }
+
+        
 
 
     }

@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6046218251148992812}
   - component: {fileID: 6046218251148992813}
-  - component: {fileID: 4730370114383045844}
   - component: {fileID: 1581041361815694135}
-  - component: {fileID: 9183392843066224767}
+  - component: {fileID: 4730370114383045844}
   - component: {fileID: 3471444454687977622}
+  - component: {fileID: 9183392843066224767}
   m_Layer: 0
   m_Name: EnemyBasic
   m_TagString: ChasingPlayer
@@ -86,6 +86,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!136 &1581041361815694135
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6046218251148992978}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.24
+  m_Height: 4.03
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &4730370114383045844
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -102,20 +116,25 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 4
   m_CollisionDetection: 0
---- !u!136 &1581041361815694135
-CapsuleCollider:
+--- !u!95 &3471444454687977622
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6046218251148992978}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.24
-  m_Height: 4.03
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 263c78caa10d9584ca547154ba7a833f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &9183392843066224767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,23 +148,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetPosition: {fileID: 0}
-  EnemySpeed: 35
---- !u!95 &3471444454687977622
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6046218251148992978}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d58666115a517bf469002159738d9502, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  EnemySpeed: 20
+  animator: {fileID: 3471444454687977622}

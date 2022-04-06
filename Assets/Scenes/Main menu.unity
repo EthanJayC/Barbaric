@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.4442166, g: 0.49365914, b: 0.57305115, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -208,7 +208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 344860363}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: SceneChange
+        m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -286,7 +286,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: c24ba248c8bd6ba4194caff127f74928, type: 2}
   m_audioClip: {fileID: 8300000, guid: ecfd312d8993cc44b8a0c407c1ad8e57, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -791,7 +791,7 @@ Light:
   m_GameObject: {fileID: 881943066}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 2
+  m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 2
@@ -851,13 +851,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 881943066}
-  m_LocalRotation: {x: -0.2447932, y: 0.6668327, z: -0.6659856, w: -0.22775792}
-  m_LocalPosition: {x: -0.000006784937, y: 26.48, z: -0.000017786031}
+  m_LocalRotation: {x: 0.13854973, y: 0.676369, z: -0.67202234, w: -0.26779655}
+  m_LocalPosition: {x: -0.000000561224, y: 26.48, z: -0.000021569573}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 88.618, y: -607.631, z: -106.675}
+  m_LocalEulerAnglesHint: {x: 56.602, y: -805.138, z: -276.088}
 --- !u!1 &1144547548
 GameObject:
   m_ObjectHideFlags: 0
