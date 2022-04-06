@@ -14,9 +14,8 @@ A quick tutorial:
 - Esc - Pause menu with music slider and quit
 
 In-game shop currently has keybindings due to the button functions not currently working
-- 1: buy helf
-- 2: buy attack buff (only purchasable once atm, although plan to scale it in future) 
-- - NOTE: The attack upgrade costs only 5 skulls so you can test it out, after that you'll rack up the skulls quick
-- 3: buy dash cooldown, although once you upgrade several times you'll get UNLIMITED DASH! unintended consequence of not clamping the cooldown reset value lol
+- 1: Heal, restores 3HP
+- 2: damage modifier, each thrust of your spear will kill one more enemy!
+- 3: buy dash cooldown, takes 1 second off your dash
 
 Enjoy!
