@@ -8,7 +8,7 @@ Especially watch out for the red Gors, they may die as easily as the Goblins, bu
 
 A quick tutorial:
 - WSAD keys - Move
-- Spacebar - Dash
+- Spacebar - Dash, allows you to move through enemies unharmed  (and walls, but we don't talk about that)
 - Left mouse button - Attack
 - Tab - Brings up in-game shop to spend skulls on some cool abilities (WIP)
 - Esc - Pause menu with music slider and quit
